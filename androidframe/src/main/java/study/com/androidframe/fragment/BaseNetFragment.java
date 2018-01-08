@@ -38,6 +38,7 @@ public abstract class BaseNetFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         if (setChecked()) {
             EventBus.getDefault().register(this);
             netReceiver = new NetReceiver();
@@ -45,7 +46,7 @@ public abstract class BaseNetFragment extends BaseFragment {
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             activity.registerReceiver(netReceiver, filter);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
