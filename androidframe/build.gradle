@@ -1,0 +1,44 @@
+apply from: "version.gradle"
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion android.compileSdkVersion
+    buildToolsVersion android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion android.minSdkVersion
+        targetSdkVersion android.targetSdkVersion
+        versionCode android.versionCode
+        versionName android.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile dep.appcompat
+    compile dep.evenbus
+    compile dep.butterKnife
+    compile dep.rxjava
+    compile dep.rxandroid
+    compile dep.retrofit
+    compile dep.gson
+
+    compile dep.adapter_rxjava
+    compile dep.okhttp
+    compile dep.logging
+    testCompile 'junit:junit:4.12'
+}

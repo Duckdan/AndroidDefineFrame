@@ -1,0 +1,28 @@
+/**
+ * 提取依赖库版本号至此
+ */
+
+ext {
+    android = [
+            compileSdkVersion : 25,
+            buildToolsVersion: '26.0.1',
+            minSdkVersion    : 19,
+            targetSdkVersion : 25,
+            versionCode      : 1,
+            versionName      : '1.0'
+    ]
+
+    dep = [
+            appcompat     : 'com.android.support:appcompat-v7:25.3.1',
+            evenbus       : 'org.greenrobot:eventbus:3.1.1',
+            butterKnife   : 'com.jakewharton:butterknife:8.8.1',
+            rxjava        : 'io.reactivex.rxjava2:rxjava:2.1.1',
+            rxandroid     : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+            retrofit      : 'com.squareup.retrofit2:retrofit:2.3.0',
+            gson          : 'com.squareup.retrofit2:converter-gson:2.3.0',
+            adapter_rxjava: 'com.squareup.retrofit2:adapter-rxjava2:2.3.0',
+            okhttp        : 'com.squareup.okhttp3:okhttp:3.9.0',
+            logging       : 'com.squareup.okhttp3:logging-interceptor:3.9.0',
+            urlconnection : 'com.squareup.okhttp3:okhttp-urlconnection:3.9.0'
+    ]
+}
