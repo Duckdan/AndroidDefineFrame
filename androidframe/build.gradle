@@ -40,5 +40,6 @@ dependencies {
     compile dep.adapter_rxjava
     compile dep.okhttp
     compile dep.logging
+    compile dep.urlconnection
     testCompile 'junit:junit:4.12'
 }
