@@ -36,4 +36,8 @@ public class ToastUtils {
         showToast(context, msg, Toast.LENGTH_SHORT);
     }
 
+    public static void destroyToast() {
+        toast = null;
+    }
+
 }

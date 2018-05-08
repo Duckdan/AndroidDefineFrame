@@ -1,24 +1,66 @@
 package study.com.androidframe;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import butterknife.ButterKnife;
+import study.com.androidframe.utils.DialogUtil;
+import study.com.androidframe.utils.StatusBarUtil;
+import study.com.androidframe.utils.ToastUtils;
 
 
 /**
  * 继承至AppCompatActivity的基类
  */
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
+    //标记当前的Activity是否是引导页
+    private boolean isSplashActivity = false;
+    private boolean isLightStatusBar = false;
+    private boolean isTranslucent = false;
+    private boolean isNavigation = false;
+
+    public boolean isSplashActivity() {
+        return isSplashActivity;
+    }
+
+    public void setSplashActivity(boolean splashActivity) {
+        isSplashActivity = splashActivity;
+    }
+
+
+    public boolean isLightStatusBar() {
+        return isLightStatusBar;
+    }
+
+    public void setLightStatusBar(boolean lightStatusBar) {
+        isLightStatusBar = lightStatusBar;
+    }
+
+    public boolean isTranslucent() {
+        return isTranslucent;
+    }
+
+    public void setTranslucent(boolean translucent) {
+        isTranslucent = translucent;
+    }
+
+    public boolean isNavigation() {
+        return isNavigation;
+    }
+
+    public void setNavigation(boolean navigation) {
+        isNavigation = navigation;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dealSteepDark();
+        StatusBarUtil.setStatusBarTranslucent(this, isLightStatusBar, isTranslucent, isNavigation);
         setContentView(getLayoutView());
         ButterKnife.bind(this);
         initView(savedInstanceState);
@@ -31,9 +73,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * 根布局一定要添加android:fitsSystemWindows="true"这个属性
      */
     protected void dealSteepDark() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (isSplashActivity) { //如果是引导页则当前Activity充满屏幕
             Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 
@@ -58,9 +100,28 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
+    protected void jumpActivity(Class<? extends Activity> clazz, String... args) {
+        Intent intent = new Intent(this, clazz);
+        for (int i = 0; i < args.length; i++) {
+            intent.putExtra(args[i], args[++i]);
+        }
+
+        startActivity(intent);
+    }
+
+
+    public void showProgressDialog(String message, boolean cancelable) {
+        DialogUtil.showProgressDialog(this, message, cancelable);
+    }
+
+    public void stopProgressDialog() {
+        DialogUtil.stopProgressDialog();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ToastUtils.destroyToast();
     }
 
 
@@ -73,6 +134,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     /**
      * 初始化控件
+     *
      * @param savedInstanceState
      */
     protected abstract void initView(Bundle savedInstanceState);

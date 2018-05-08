@@ -1,6 +1,7 @@
 package study.com.androidframe.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 继承至Fragment的基类
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
     protected View view;
     protected Activity activity;
+    protected Unbinder unbinder;
 
     @Nullable
     @Override
@@ -25,7 +28,7 @@ public abstract class BaseFragment extends Fragment {
         if (view == null) {
             view = inflater.inflate(getLayoutView(), null);
             activity = getActivity();
-            ButterKnife.bind(this, view);
+            unbinder = ButterKnife.bind(this, view);
         }
         return view;
     }
@@ -42,6 +45,20 @@ public abstract class BaseFragment extends Fragment {
         initView(savedInstanceState);
         initListener();
         initData();
+    }
+
+    protected void jumpActivity(Class<? extends Activity> clazz) {
+        Intent intent = new Intent(activity, clazz);
+        activity.startActivity(intent);
+    }
+
+    protected void jumpActivity(Class<? extends Activity> clazz, String... args) {
+        Intent intent = new Intent(activity, clazz);
+        for (int i = 0; i < args.length; i++) {
+            intent.putExtra(args[i], args[++i]);
+        }
+
+        activity.startActivity(intent);
     }
 
     /**
